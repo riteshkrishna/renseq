@@ -27,7 +27,11 @@ def process_bedfile(inputbed, outputbed):
     in_bed = open(inputbed)
 
     group_id = ''
-    group_start , group_end , group_readcount, group_basecount , group_length = 0
+    group_start = 0
+    group_end = 0
+    group_readcount = 0
+    group_basecount = 0
+    group_length = 0
     group_precent = 0.0
 
     num_grouped_lines = 0
@@ -56,12 +60,16 @@ def process_bedfile(inputbed, outputbed):
 
         elif current_readcount == 0 and num_grouped_lines >= 1: # Grouping happened
 
-            out_bed.write(group_id + '\t' + group_start + '\t' + group_end + '\t' + group_readcount + '\t'
-                          + group_basecount + '\t' + group_length + '\t' + group_precent + '\n')
+            out_bed.write(group_id + '\t' + str(group_start) + '\t' + str(group_end) + '\t' + str(group_readcount) + '\t'
+                          + str(group_basecount) + '\t' + str(group_length) + '\t' + str(group_precent) + '\n')
             out_bed.write(line)
 
             group_id = ''
-            group_start , group_end , group_readcount, group_basecount , group_length = 0
+            group_start = 0
+            group_end = 0
+            group_readcount = 0
+            group_basecount = 0
+            group_length = 0
             group_precent = 0.0
             num_grouped_lines = 0
 
@@ -72,9 +80,9 @@ def process_bedfile(inputbed, outputbed):
                 group_id = current_id
                 group_start = current_start
             else:
-                if group_id !=  current_id:
-                    out_bed.write(group_id + '\t' + group_start + '\t' + group_end + '\t' + group_readcount + '\t'
-                          + group_basecount + '\t' + group_length + '\t' + group_precent + '\n')
+                if group_id !=  current_id: # In case there are two non-zero conc. records but with different identifiers
+                    out_bed.write(group_id + '\t' + str(group_start) + '\t' + str(group_end) + '\t' + str(group_readcount) + '\t'
+                          + str(group_basecount) + '\t' + str(group_length) + '\t' + str(group_precent) + '\n')
                     group_id = current_id
                     group_start = current_start
                     num_grouped_lines = 1
@@ -83,7 +91,7 @@ def process_bedfile(inputbed, outputbed):
             group_readcount = group_readcount + current_readcount
             group_basecount = group_basecount + current_basecount
             group_length = group_length + current_length
-            group_precent = group_basecount / group_length
+            group_precent = float(group_basecount) / float(group_length)
 
         line = in_bed.readline()
 
@@ -93,5 +101,6 @@ def process_bedfile(inputbed, outputbed):
 
 
 if __name__=="__main__":
-    input_bedfile = ""
-    output_bedfile = ""
+    input_bedfile = "/home/ritesh/PycharmProjects/renseq/Temp/test.bed"
+    output_bedfile = "/home/ritesh/PycharmProjects/renseq/Temp/test_retouched.bed"
+    process_bedfile(input_bedfile, output_bedfile)
