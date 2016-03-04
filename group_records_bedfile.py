@@ -57,6 +57,14 @@ def process_bedfile(inputbed, outputbed):
         if current_readcount == 0 and num_grouped_lines == 0: # No grouping happened
 
             out_bed.write(line)
+            group_id = ''
+            group_start = 0
+            group_end = 0
+            group_readcount = 0
+            group_basecount = 0
+            group_length = 0
+            group_precent = 0.0
+            num_grouped_lines = 0
 
         elif current_readcount == 0 and num_grouped_lines >= 1: # Grouping happened
 
